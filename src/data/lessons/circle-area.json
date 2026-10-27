@@ -1,0 +1,96 @@
+{
+  "id": "circle-area",
+  "world": "geometry",
+  "island": "幾何之島",
+  "title": "圓面積從哪裡來？",
+  "summary": "從圓與扇形出發，把圓切開、重新排列，自己推導出 A = πr²。",
+  "levels": [
+    {
+      "id": "draw-circle",
+      "title": "畫一個圓",
+      "view": "circle",
+      "tools": ["radius"],
+      "setup": { "radius": 5, "angleDeg": 60, "rearrange": 0 },
+      "mission": "把半徑 r 調到 4，看看周長 C = 2πr 怎麼跟著變。",
+      "hint": "拖動左邊的「半徑 r」滑桿；點一下滑桿後也可以用方向鍵一格一格調。",
+      "goal": { "metric": "radius", "equals": 4, "tolerance": 0.05 },
+      "success": "r = 4 時 C = 8π ≈ 25.13。圓周上的每一個點都是 x = r cos θ、z = r sin θ 算出來的。"
+    },
+    {
+      "id": "quarter",
+      "title": "四分之一圓",
+      "view": "circle",
+      "tools": ["radius", "angle"],
+      "mission": "把圓心角 θ 調成 90°，切出四分之一個圓。",
+      "hint": "90° 也可以寫成 π/2，滑桿旁邊會同時顯示。",
+      "goal": { "metric": "angleDeg", "equals": 90, "tolerance": 0.5 },
+      "success": "90° = π/2，扇形面積是整個圓的 1/4。"
+    },
+    {
+      "id": "one-radian",
+      "title": "一弧度",
+      "view": "circle",
+      "tools": ["radius", "angle"],
+      "mission": "調整圓心角，讓弧長 s 剛好等於半徑 r。",
+      "hint": "s = rθ，所以 s = r 的時候 θ = 1。1 弧度大約是幾度？",
+      "goal": { "metric": "arcOverRadius", "equals": 1, "tolerance": 0.01 },
+      "success": "θ = 1 弧度 ≈ 57.3°。弧長等於半徑時的圓心角，就是「弧度」的定義。"
+    },
+    {
+      "id": "slice",
+      "title": "切開圓",
+      "view": "slices",
+      "tools": ["radius", "slices"],
+      "setup": { "slices": 8, "rearrange": 0 },
+      "mission": "把圓切成 16 片一樣大的扇形。",
+      "hint": "每一片都是真正的扇形，圓心角 2π ÷ 16 = π/8。",
+      "goal": { "metric": "sliceCount", "equals": 16 },
+      "success": "16 片，每片圓心角 π/8。前半圈是橘色、後半圈是青色。"
+    },
+    {
+      "id": "rearrange",
+      "title": "重新排列",
+      "view": "slices",
+      "tools": ["radius", "slices", "rearrange"],
+      "setup": { "rearrange": 0 },
+      "mission": "把切片一上一下交錯排成一排 ▲▼▲▼。",
+      "hint": "按「▲▼ 排成一列」，或把「重新排列」滑桿拉到 100%。",
+      "goal": { "metric": "rearrange", "equals": 1, "tolerance": 0.001 },
+      "success": "排好了！橘色在上排、青色在下排，看起來像一個歪歪的平行四邊形。"
+    },
+    {
+      "id": "finer",
+      "title": "越切越細",
+      "view": "slices",
+      "tools": ["radius", "slices", "rearrange"],
+      "mission": "保持排成一列，把切片數加到 64 片以上，看看形狀變成什麼。",
+      "hint": "注意面板上「與 πr² 相差」的百分比。",
+      "goal": {
+        "all": [
+          { "metric": "sliceCount", "atLeast": 64 },
+          { "metric": "rearrange", "equals": 1, "tolerance": 0.001 }
+        ]
+      },
+      "success": "切得越細，上下的弧越平，形狀越接近長方形，和 πr² 只差不到 0.2%。"
+    },
+    {
+      "id": "derive",
+      "title": "推導面積",
+      "view": "slices",
+      "tools": ["radius", "slices", "rearrange"],
+      "setup": { "rearrange": 1 },
+      "mission": "排出來的長方形，底大約是多長？",
+      "quiz": {
+        "options": [
+          { "id": "r", "text": "r" },
+          { "id": "half", "text": "πr（半個圓周）" },
+          { "id": "full", "text": "2πr（整個圓周）" }
+        ],
+        "answer": "half",
+        "retry": "再看一次：上排只用到前半圈的弧，下排用到後半圈的弧。"
+      },
+      "goal": { "metric": "quizAnswer", "equals": "half" },
+      "success": "長方形面積 = 底 × 高 ≈ πr × r = πr²。你自己推導出了圓面積公式！"
+    }
+  ]
+}
