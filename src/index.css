@@ -122,14 +122,75 @@ var {
   color: var(--ink-soft);
 }
 
-.panel__hint span {
-  display: block;
-}
-
 .panel__hint {
   margin: 14px 0 0;
   font-size: 12px;
   color: var(--ink-soft);
+}
+
+.panel__note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+/* ---------- 分段按鈕 ---------- */
+
+.segmented {
+  display: flex;
+  gap: 2px;
+  margin: 12px 0 14px;
+  padding: 3px;
+  border-radius: 8px;
+  background: rgba(29, 36, 34, 0.08);
+}
+
+.segmented__item {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 4px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.segmented__item:hover {
+  color: var(--ink);
+}
+
+.segmented__item.is-active {
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
+}
+
+.segmented__item:focus-visible {
+  outline: 2px solid var(--amber-deep);
+  outline-offset: 1px;
+}
+
+.segmented--sm {
+  margin: 6px 0 0;
+}
+
+.segmented--sm .segmented__item {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 5px 2px;
+}
+
+.field {
+  margin-top: 14px;
+}
+
+.field__label {
+  font-size: 14px;
 }
 
 .panel__section + .panel__section {

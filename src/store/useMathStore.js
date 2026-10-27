@@ -9,6 +9,10 @@
 
 import { create } from 'zustand'
 import { TAU, degToRad } from '../math/algorithms/angle.js'
+import { SLICE_COUNTS } from '../math/geometry/slices.js'
+
+/** 畫面上顯示的數學物件：圓與扇形、切片 */
+export const VIEWS = Object.freeze(['circle', 'slices'])
 
 export const CIRCLE_RADIUS_LIMITS = Object.freeze({ min: 0.5, max: 10, step: 0.1 })
 
@@ -22,6 +26,7 @@ const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 
 export const useMathStore = create((set) => ({
   world: 'geometry',
+  view: 'circle',
 
   circle: {
     radius: 5,
@@ -51,6 +56,16 @@ export const useMathStore = create((set) => ({
   },
 
   setWorld: (world) => set({ world }),
+
+  setView: (view) => {
+    if (VIEWS.includes(view)) set({ view })
+  },
+
+  setSliceCount: (count) => {
+    const value = Number(count)
+    if (!SLICE_COUNTS.includes(value)) return
+    set((state) => ({ circle: { ...state.circle, slices: value } }))
+  },
 
   setCircleRadius: (radius) => {
     const value = Number(radius)

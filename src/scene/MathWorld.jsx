@@ -1,24 +1,35 @@
 import { Canvas } from '@react-three/fiber'
 import Circle3D from '../components/math/Circle3D.jsx'
+import CircleSlices3D from '../components/math/CircleSlices3D.jsx'
 import CoordinateSystem from '../components/math/CoordinateSystem.jsx'
 import Sector3D from '../components/math/Sector3D.jsx'
+import { useMathStore } from '../store/useMathStore.js'
 import CameraRig from './CameraRig.jsx'
 import Environment from './Environment.jsx'
 import Lighting from './Lighting.jsx'
 
 /**
  * R3F Canvas：整個 3D 數學世界的根。
- * 目前放座標系、Circle3D 與 Sector3D；之後由 world 狀態切換 GeometryIsland、FunctionValley…
+ * 依 view 顯示「圓與扇形」或「切片」；之後由 world 狀態切換 GeometryIsland、FunctionValley…
  */
 export default function MathWorld() {
+  const view = useMathStore((state) => state.view)
+
   return (
     <Canvas className="math-world" dpr={[1, 2]} gl={{ antialias: true }}>
       <Environment />
       <Lighting />
       <CameraRig />
       <CoordinateSystem />
-      <Circle3D />
-      <Sector3D />
+
+      {view === 'circle' && (
+        <>
+          <Circle3D />
+          <Sector3D />
+        </>
+      )}
+
+      {view === 'slices' && <CircleSlices3D />}
     </Canvas>
   )
 }

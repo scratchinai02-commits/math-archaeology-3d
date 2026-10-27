@@ -67,6 +67,27 @@ describe('useMathStore', () => {
     expect(useMathStore.getState().sector.centralAngle).toBe(1.5)
   })
 
+  it('畫面預設為圓與扇形；setView 只接受已知的畫面', () => {
+    expect(useMathStore.getState().view).toBe('circle')
+    useMathStore.getState().setView('slices')
+    expect(useMathStore.getState().view).toBe('slices')
+    useMathStore.getState().setView('cube')
+    expect(useMathStore.getState().view).toBe('slices')
+  })
+
+  it('setSliceCount 只接受 4、8、16、32、64、128', () => {
+    useMathStore.getState().setSliceCount(32)
+    expect(useMathStore.getState().circle).toEqual({ radius: 5, slices: 32 })
+
+    useMathStore.getState().setSliceCount('64')
+    expect(useMathStore.getState().circle.slices).toBe(64)
+
+    for (const bad of [7, 10, 256, 'abc']) {
+      useMathStore.getState().setSliceCount(bad)
+      expect(useMathStore.getState().circle.slices).toBe(64)
+    }
+  })
+
   it('setWorld 切換世界', () => {
     useMathStore.getState().setWorld('function')
     expect(useMathStore.getState().world).toBe('function')
