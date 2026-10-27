@@ -1,0 +1,30 @@
+{
+  "name": "math-archaeology-3d",
+  "private": true,
+  "version": "0.1.0",
+  "description": "躺在硬碟 10 年的舊講義 → 演算法驅動的 3D 互動數學教學 App",
+  "type": "module",
+  "engines": {
+    "node": "^22.12.0 || >=24.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.0",
+    "@react-three/fiber": "^9.8.0",
+    "react": "~19.3.0",
+    "react-dom": "~19.3.0",
+    "three": "^0.186.0",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.0",
+    "vite": "^8.3.0",
+    "vitest": "^5.0.0"
+  }
+}
