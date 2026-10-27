@@ -10,6 +10,12 @@ export function assertPositiveNumber(value, name) {
   }
 }
 
+export function assertFiniteNumber(value, name) {
+  if (typeof value !== 'number' || !Number.isFinite(value)) {
+    throw new RangeError(`${name} 必須是有限數字，收到：${value}`)
+  }
+}
+
 export function assertIntegerAtLeast(value, min, name) {
   if (!Number.isInteger(value) || value < min) {
     throw new RangeError(`${name} 必須是 ≥ ${min} 的整數，收到：${value}`)

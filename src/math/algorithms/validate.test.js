@@ -1,5 +1,19 @@
 import { describe, expect, it } from 'vitest'
-import { assertIntegerAtLeast, assertPositiveNumber } from './validate.js'
+import { assertFiniteNumber, assertIntegerAtLeast, assertPositiveNumber } from './validate.js'
+
+describe('assertFiniteNumber', () => {
+  it('接受任何有限數字（含 0 與負數）', () => {
+    for (const ok of [0, -3.5, 2 * Math.PI]) {
+      expect(() => assertFiniteNumber(ok, 'x')).not.toThrow()
+    }
+  })
+
+  it('拒絕 NaN、Infinity 與非數字', () => {
+    for (const bad of [Number.NaN, Infinity, -Infinity, '1', null, undefined]) {
+      expect(() => assertFiniteNumber(bad, 'x')).toThrow(RangeError)
+    }
+  })
+})
 
 describe('assertPositiveNumber', () => {
   it('接受大於 0 的有限數字', () => {

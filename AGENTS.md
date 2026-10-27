@@ -65,7 +65,7 @@
 - [x] 3. Camera
 - [x] 4. Lighting
 - [x] 5. Zustand
-- [ ] 6. CoordinateSystem
+- [x] 6. CoordinateSystem（`createCoordinateSystem` + `CoordinateSystem`）
 - [x] 7. Circle（`createCirclePoints` + `Circle3D` + 半徑滑桿）
 - [ ] 8. Sector
 - [ ] 9. CircleSlices
