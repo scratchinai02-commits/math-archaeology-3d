@@ -13,10 +13,26 @@
 | --- | --- |
 | 線上版 | https://math-archaeology-3d-460168640095.asia-east1.run.app （Cloud Run，revision 00003 = commit `ec4d5da`） |
 | 原始碼 | https://github.com/scratchinai02-commits/math-archaeology-3d （`main`） |
-| 本機 | `~/inhs/math-archaeology-3d`（git 工作目錄，與 GitHub 同步） |
+| 本機 | `~/inhs/math-archaeology-3d`（檔案與 GitHub 相同；第一次接手要先執行下方「接上 GitHub」指令） |
 | GCP | 專案 `sign-in-4a9b6`，區域 `asia-east1`，服務 `math-archaeology-3d` |
 | 測試 | 151 項（Vitest），全部通過；Cloud Build 部署時會再跑一次，沒過就不會上線 |
 | 施工清單 | 第 1～10 項完成；第 21 項任務系統：關卡資料與判定邏輯完成，**畫面尚未接上** |
+
+## 第一次接手：把本機資料夾接上 GitHub（只要做一次）
+
+Claude 只能同步檔案、不能寫入 `.git`，所以本機資料夾目前不是 git 工作目錄。在 Antigravity 的終端機執行：
+
+```bash
+cd ~/inhs/math-archaeology-3d
+git init -b main
+git remote add origin https://github.com/scratchinai02-commits/math-archaeology-3d.git
+git fetch origin
+git reset origin/main
+git branch --set-upstream-to=origin/main main
+git status   # 應該顯示 nothing to commit, working tree clean
+```
+
+之後就能正常 `git pull`、`git commit`、`git push`（第一次 push 會要求登入 GitHub）。
 
 ## 下一步（一次只做一項，做完測試、提交、更新日誌）
 
