@@ -3,6 +3,14 @@
 給所有參與這個專案的 AI 協作者（Codex、Antigravity、Claude…）與人類開發者。
 動手之前請先讀完這份文件。
 
+## 接手與交接（Claude ↔ Antigravity ↔ Codex）
+
+- **開始前**：讀 `docs/WORKLOG.md` 的「目前狀態」與「下一步」（Antigravity：`/start_session`）。
+- **結束前**：更新 `docs/WORKLOG.md`、勾選下方施工進度、commit 並 push（Antigravity：`/end_session`）。
+- 其他 workflow：`/add_math_shape`（新增數學圖形）、`/deploy`（部署到 Cloud Run）。檔案在 `.agent/workflows/`。
+- 原始碼以 GitHub `scratchinai02-commits/math-archaeology-3d` 的 `main` 為準。
+- **目前方向**：3D 數學冒險島，一座島一座島慢慢建，先做幾何之島（詳見日誌）。
+
 ## 最高原則
 
 > 不是把舊講義換成漂亮的 3D 背景，而是讓 AI 理解講義原本要教什麼，
@@ -80,7 +88,7 @@
 - [ ] 18. FunctionSurface
 - [ ] 19. GeometryIsland
 - [ ] 20. FunctionValley
-- [ ] 21. 任務系統
+- [ ] 21. 任務系統（關卡 JSON + `goals.js` 判定完成，畫面待做）
 - [ ] 22. 舊講義 JSON
 - [ ] 23. Codex 自動解析
 - [ ] 24. Antigravity 世界化

@@ -42,7 +42,7 @@ Cloud Build 會依 `Dockerfile` 執行 `npm install` → `npm test` → `npm run
 
 **線上版**：https://math-archaeology-3d-460168640095.asia-east1.run.app
 
-## 目前進度：第二階段完成（施工清單 1～8）
+## 目前進度：施工清單 1～10 完成
 
 第一階段
 - Vite + React 基礎專案（等同 `npm create vite@latest -- --template react`，另加 three / R3F / Drei / Zustand / Vitest）
@@ -60,7 +60,9 @@ Cloud Build 會依 `Dockerfile` 執行 `npm install` → `npm test` → `npm run
 滑桿 → Zustand → createSectorPoints() → createDiskMeshData() → toBufferGeometry() → R3F → 畫面
 ```
 
-開發規則與完整施工清單見 [`AGENTS.md`](./AGENTS.md)。下一步：第 9 項 CircleSlices（把圓切成 n 片扇形）。
+第 9～10 項：把圓切成 4～128 片扇形，▲▼ 交錯排成近似 πr × r 的長方形（動畫）。
+
+開發規則與完整施工清單見 [`AGENTS.md`](./AGENTS.md)；目前狀態、下一步與交接紀錄見 [`docs/WORKLOG.md`](./docs/WORKLOG.md)。
 
 ## 目錄
 
