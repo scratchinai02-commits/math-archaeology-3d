@@ -67,7 +67,7 @@
 - [x] 5. Zustand
 - [x] 6. CoordinateSystem（`createCoordinateSystem` + `CoordinateSystem`）
 - [x] 7. Circle（`createCirclePoints` + `Circle3D` + 半徑滑桿）
-- [x] 8. Sector（`createSectorPoints`：演算法與測試；3D 元件在下一項）
+- [x] 8. Sector（`createSectorPoints` + `Sector3D` + 圓心角滑桿）
 - [ ] 9. CircleSlices
 - [ ] 10. Rearrangement
 - [ ] 11. Polygon

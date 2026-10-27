@@ -8,8 +8,12 @@
  */
 
 import { create } from 'zustand'
+import { TAU, degToRad } from '../math/algorithms/angle.js'
 
 export const CIRCLE_RADIUS_LIMITS = Object.freeze({ min: 0.5, max: 10, step: 0.1 })
+
+/** 扇形圓心角（弧度）：1° 到 2π */
+export const SECTOR_ANGLE_LIMITS = Object.freeze({ min: degToRad(1), max: TAU })
 
 /** 圓周取樣分段數：3D 圓與面板上的「取樣頂點」共用同一個值 */
 export const CIRCLE_SEGMENTS = 128
@@ -22,6 +26,12 @@ export const useMathStore = create((set) => ({
   circle: {
     radius: 5,
     slices: 8,
+  },
+
+  /** 扇形與圓共用半徑；角度一律為弧度 */
+  sector: {
+    startAngle: 0,
+    centralAngle: Math.PI / 3,
   },
 
   polygon: {
@@ -49,6 +59,16 @@ export const useMathStore = create((set) => ({
     const { min, max } = CIRCLE_RADIUS_LIMITS
     set((state) => ({
       circle: { ...state.circle, radius: clamp(value, min, max) },
+    }))
+  },
+
+  setSectorAngle: (angle) => {
+    const value = Number(angle)
+    if (!Number.isFinite(value)) return
+
+    const { min, max } = SECTOR_ANGLE_LIMITS
+    set((state) => ({
+      sector: { ...state.sector, centralAngle: clamp(value, min, max) },
     }))
   },
 }))

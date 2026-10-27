@@ -40,22 +40,27 @@ Cloud Build 會依 `Dockerfile` 執行 `npm install` → `npm test` → `npm run
 **測試沒過就不會部署**；成功後終端機會顯示網址（`https://math-archaeology-3d-….run.app`）。
 之後更新只要在 Cloud Shell 執行 `bash ~/math-archaeology-3d/deploy.sh`（會自動 `git pull` 再部署）。專案需已啟用計費（Cloud Run 有免費額度）。
 
-## 目前進度：第一階段
+**線上版**：https://math-archaeology-3d-460168640095.asia-east1.run.app
 
+## 目前進度：第二階段完成（施工清單 1～8）
+
+第一階段
 - Vite + React 基礎專案（等同 `npm create vite@latest -- --template react`，另加 three / R3F / Drei / Zustand / Vitest）
 - R3F Canvas、相機、燈光、OrbitControls、地面格線
-- Zustand store（設計文件第 6 節的狀態結構）
-- `createCirclePoints()`：由 x = r cos θ、z = r sin θ 計算圓周頂點
-- `Circle3D`：圓面（三角扇 BufferGeometry）+ 圓周 + 半徑
-- 半徑滑桿：拖動時重新計算頂點，周長與面積同步更新
+- `createCirclePoints()` + `Circle3D` + 半徑滑桿；周長與面積即時計算
+
+第二階段
+- `createCoordinateSystem()` + `CoordinateSystem`：軸線、刻度、箭頭全部由演算法計算
+- `createSectorPoints(radius, startAngle, endAngle, segments)`：扇形圓弧；圓 = 圓心角 2π 的扇形
+- `Sector3D` + 圓心角滑桿（1°～360°，顯示 π 分數）；弧長、扇形面積、占整圓比例即時計算
 
 資料流：
 
 ```text
-半徑滑桿 → Zustand → createCirclePoints() → createDiskMeshData() → toBufferGeometry() → R3F → 畫面
+滑桿 → Zustand → createSectorPoints() → createDiskMeshData() → toBufferGeometry() → R3F → 畫面
 ```
 
-開發規則與完整施工清單見 [`AGENTS.md`](./AGENTS.md)。
+開發規則與完整施工清單見 [`AGENTS.md`](./AGENTS.md)。下一步：第 9 項 CircleSlices（把圓切成 n 片扇形）。
 
 ## 目錄
 
@@ -64,11 +69,11 @@ src/
 ├── app/App.jsx                       只負責組合
 ├── scene/                            MathWorld（Canvas）、CameraRig、Lighting、Environment
 ├── components/
-│   ├── math/Circle3D.jsx             演算法 → 3D 元件
-│   └── ui/                           CirclePanel、RadiusSlider
+│   ├── math/                         Circle3D、Sector3D、CoordinateSystem（演算法 → 3D 元件）
+│   └── ui/                           CirclePanel、ParamSlider、RadiusSlider、AngleSlider
 ├── math/
-│   ├── geometry/circle.js            純數學：圓
-│   └── algorithms/                   validate、meshData、bufferGeometry
+│   ├── geometry/                     純數學：circle、sector、axes
+│   └── algorithms/                   validate、angle、meshData、bufferGeometry
 ├── store/useMathStore.js             Zustand
 ├── worlds/  data/  math/functions/  math/statistics/  components/world/   （之後的階段）
 └── main.jsx
