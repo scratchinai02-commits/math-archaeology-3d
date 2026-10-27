@@ -9,6 +9,7 @@
  */
 
 import { TAU } from '../algorithms/angle.js'
+import { shortestRotation } from '../algorithms/transform.js'
 import { assertFiniteNumber, assertIntegerAtLeast, assertPositiveNumber } from '../algorithms/validate.js'
 import { arcSegmentsFor, createSectorPoints } from './sector.js'
 
@@ -64,4 +65,98 @@ export function sliceCircle(radius, count, { gap = 0 } = {}) {
       position: [gap * Math.cos(mid), 0, gap * Math.sin(mid)],
     }
   })
+}
+
+/**
+ * 重新排列後的尺寸（設計文件 5.4）。
+ *
+ * 每片是頂角 α、兩邊為 r 的扇形：
+ *   弦長 c = 2r sin(α/2)，頂點到弦的高 h = r cos(α/2)
+ * 上排放前半圈 n/2 片（弧朝外），下排放後半圈 n/2 片（弧朝內），左右錯開 c/2 互相嵌合：
+ *   底 = (n/2)·c → πr，高 = h → r，面積 = 底 × 高 = ½·n·r²·sin α → πr²
+ */
+export function rearrangedDimensions(radius, count) {
+  assertPositiveNumber(radius, 'radius')
+  const alpha = sliceAngle(count)
+
+  const chord = 2 * radius * Math.sin(alpha / 2)
+  const height = radius * Math.cos(alpha / 2)
+  const base = (count / 2) * chord
+
+  return {
+    chord,
+    height,
+    base,
+    slant: chord / 2,
+    width: base + chord / 2,
+    area: base * height,
+    limitBase: Math.PI * radius,
+    limitHeight: radius,
+    limitArea: Math.PI * radius * radius,
+  }
+}
+
+/**
+ * 設計文件 5.4：扇形交錯排列 ▲ ▼ ▲ ▼
+ *
+ * 第 i 片（圓上的順序）在排列後的位置：
+ *   前半圈（row 0）：頂點在 z = +h/2，弧朝 −z；x = −W/2 + (j + ½)c
+ *   後半圈（row 1）：頂點在 z = −h/2，弧朝 +z；x = −W/2 + (j + 1)c
+ * 整條排列以原點為中心，寬 W = (n/2)c + c/2。
+ */
+export function rearrangeSlices(radius, count) {
+  const alpha = sliceAngle(count)
+  const { chord, height, width } = rearrangedDimensions(radius, count)
+  const half = count / 2
+
+  return Array.from({ length: count }, (_, index) => {
+    const row = index < half ? 0 : 1
+    const j = index - row * half
+
+    return {
+      index,
+      row,
+      position:
+        row === 0
+          ? [-width / 2 + (j + 0.5) * chord, 0, height / 2]
+          : [-width / 2 + (j + 1) * chord, 0, -height / 2],
+      rotation: row === 0 ? alpha / 2 + Math.PI / 2 : alpha / 2 - Math.PI / 2,
+    }
+  })
+}
+
+/**
+ * 動畫用：每片從「圓上」(from) 到「排成一列」(to) 的變換。
+ * to.rotation 會換成離 from 最近的等價角度，切片不會多轉一圈。
+ */
+export function createSliceLayout(radius, count, { gap = 0 } = {}) {
+  const circle = sliceCircle(radius, count, { gap })
+  const strip = rearrangeSlices(radius, count)
+
+  return circle.map((slice, i) => ({
+    index: slice.index,
+    row: strip[i].row,
+    startAngle: slice.startAngle,
+    endAngle: slice.endAngle,
+    from: { position: slice.position, rotation: slice.rotation },
+    to: {
+      position: strip[i].position,
+      rotation: shortestRotation(slice.rotation, strip[i].rotation),
+    },
+  }))
+}
+
+/** 對照用的長方形：底 πr、高 r，以原點為中心（閉合折線） */
+export function createReferenceRectangle(radius) {
+  assertPositiveNumber(radius, 'radius')
+  const halfBase = (Math.PI * radius) / 2
+  const halfHeight = radius / 2
+
+  return [
+    [-halfBase, 0, -halfHeight],
+    [halfBase, 0, -halfHeight],
+    [halfBase, 0, halfHeight],
+    [-halfBase, 0, halfHeight],
+    [-halfBase, 0, -halfHeight],
+  ]
 }

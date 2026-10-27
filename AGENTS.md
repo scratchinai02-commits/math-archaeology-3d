@@ -69,7 +69,7 @@
 - [x] 7. Circle（`createCirclePoints` + `Circle3D` + 半徑滑桿）
 - [x] 8. Sector（`createSectorPoints` + `Sector3D` + 圓心角滑桿）
 - [x] 9. CircleSlices（`sliceCircle` + `CircleSlices3D` + 切片數 4～128）
-- [ ] 10. Rearrangement
+- [x] 10. Rearrangement（`rearrangeSlices` + 動畫 + πr × r 對照長方形）
 - [ ] 11. Polygon
 - [ ] 12. Prism
 - [ ] 13. Pyramid

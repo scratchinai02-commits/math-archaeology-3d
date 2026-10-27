@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { Object3D, Vector3 } from 'three'
-import { applyTransform, rotateY, shortestRotation, wrapAngle } from './transform.js'
+import { applyTransform, lerp, lerpTransform, rotateY, shortestRotation, wrapAngle } from './transform.js'
 
 const expectPointClose = (a, b, digits = 12) => a.forEach((v, i) => expect(v).toBeCloseTo(b[i], digits))
 
@@ -72,5 +72,32 @@ describe('wrapAngle / shortestRotation', () => {
       expect(Math.cos(result)).toBeCloseTo(Math.cos(to), 12)
       expect(Math.sin(result)).toBeCloseTo(Math.sin(to), 12)
     }
+  })
+})
+
+describe('lerp / lerpTransform', () => {
+  const from = { position: [0, 0, 0], rotation: 0 }
+  const to = { position: [4, 0, -2], rotation: Math.PI }
+
+  it('lerp：t = 0、½、1', () => {
+    expect(lerp(2, 6, 0)).toBe(2)
+    expect(lerp(2, 6, 0.5)).toBe(4)
+    expect(lerp(2, 6, 1)).toBe(6)
+  })
+
+  it('t = 0 是起點、t = 1 是終點', () => {
+    expect(lerpTransform(from, to, 0)).toEqual(from)
+    expect(lerpTransform(from, to, 1, { lift: 3 })).toEqual(to)
+  })
+
+  it('途中沿 y 抬高，t = ½ 時剛好是 lift', () => {
+    const mid = lerpTransform(from, to, 0.5, { lift: 3 })
+    expect(mid.position).toEqual([2, 3, -1])
+    expect(mid.rotation).toBeCloseTo(Math.PI / 2, 12)
+  })
+
+  it('不修改傳入的物件', () => {
+    lerpTransform(from, to, 0.3, { lift: 1 })
+    expect(from.position).toEqual([0, 0, 0])
   })
 })

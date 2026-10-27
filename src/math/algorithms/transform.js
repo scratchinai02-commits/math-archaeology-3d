@@ -30,3 +30,19 @@ export function wrapAngle(angle) {
 export function shortestRotation(from, to) {
   return from + wrapAngle(to - from)
 }
+
+/** 線性內插 */
+export function lerp(a, b, t) {
+  return a + (b - a) * t
+}
+
+/**
+ * 兩個變換之間的內插：位置、角度線性內插，
+ * 途中再沿 y 軸抬高 lift · 4t(1 − t)（t = ½ 時最高），切片移動時才不會互相穿過。
+ */
+export function lerpTransform(from, to, t, { lift = 0 } = {}) {
+  const position = from.position.map((v, i) => lerp(v, to.position[i], t))
+  position[1] += lift * 4 * t * (1 - t)
+
+  return { position, rotation: lerp(from.rotation, to.rotation, t) }
+}

@@ -88,6 +88,18 @@ describe('useMathStore', () => {
     }
   })
 
+  it('重新排列進度預設 0，夾在 0 到 1 之間', () => {
+    expect(useMathStore.getState().slicing).toEqual({ rearrange: 0 })
+    useMathStore.getState().setRearrange('0.4')
+    expect(useMathStore.getState().slicing.rearrange).toBe(0.4)
+    useMathStore.getState().setRearrange(3)
+    expect(useMathStore.getState().slicing.rearrange).toBe(1)
+    useMathStore.getState().setRearrange(-1)
+    expect(useMathStore.getState().slicing.rearrange).toBe(0)
+    useMathStore.getState().setRearrange('x')
+    expect(useMathStore.getState().slicing.rearrange).toBe(0)
+  })
+
   it('setWorld 切換世界', () => {
     useMathStore.getState().setWorld('function')
     expect(useMathStore.getState().world).toBe('function')

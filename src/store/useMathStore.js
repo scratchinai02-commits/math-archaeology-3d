@@ -33,6 +33,11 @@ export const useMathStore = create((set) => ({
     slices: 8,
   },
 
+  /** 切片重新排列的進度：0 = 切開的圓，1 = 排成一列 */
+  slicing: {
+    rearrange: 0,
+  },
+
   /** 扇形與圓共用半徑；角度一律為弧度 */
   sector: {
     startAngle: 0,
@@ -75,6 +80,12 @@ export const useMathStore = create((set) => ({
     set((state) => ({
       circle: { ...state.circle, radius: clamp(value, min, max) },
     }))
+  },
+
+  setRearrange: (progress) => {
+    const value = Number(progress)
+    if (!Number.isFinite(value)) return
+    set({ slicing: { rearrange: clamp(value, 0, 1) } })
   },
 
   setSectorAngle: (angle) => {
