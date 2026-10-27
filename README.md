@@ -17,6 +17,29 @@ npm run dev     # 開發伺服器，瀏覽器打開終端機顯示的網址
 
 其他指令：`npm run build`（打包到 `dist/`）、`npm run preview`、`npm run test:watch`。
 
+> 直接雙擊 `index.html`（`file://`）會是空白頁，一定要透過 `npm run dev` 或部署後的網址開啟。
+
+## 部署到 Google Cloud Run
+
+在 [Cloud Shell](https://shell.cloud.google.com) 執行（不需要在自己電腦裝任何東西）：
+
+```bash
+git clone https://github.com/scratchinai02-commits/math-archaeology-3d.git
+cd math-archaeology-3d
+
+gcloud config set project sign-in-4a9b6
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com
+
+gcloud run deploy math-archaeology-3d \
+  --source . \
+  --region asia-east1 \
+  --allow-unauthenticated
+```
+
+Cloud Build 會依 `Dockerfile` 執行 `npm install` → `npm test` → `npm run build`，
+**測試沒過就不會部署**；成功後終端機會顯示網址（`https://math-archaeology-3d-….run.app`）。
+之後更新只要 `git pull` 再執行最後一行。專案需已啟用計費（Cloud Run 有免費額度）。
+
 ## 目前進度：第一階段
 
 - Vite + React 基礎專案（等同 `npm create vite@latest -- --template react`，另加 three / R3F / Drei / Zustand / Vitest）
