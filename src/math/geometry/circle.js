@@ -5,12 +5,13 @@
  *   z = r sin θ        0 ≤ θ ≤ 2π
  *
  * 圓放在 x-z 平面（y = 0），也就是 3D 場景的地面。
+ * 圓就是圓心角 2π 的扇形，所以頂點由 createSectorPoints() 計算。
  * 學生改變半徑時，重新計算真正的頂點，而不是縮放圖片或縮放 Mesh。
  */
 
+import { TAU } from '../algorithms/angle.js'
 import { assertIntegerAtLeast, assertPositiveNumber } from '../algorithms/validate.js'
-
-const TAU = Math.PI * 2
+import { createSectorPoints } from './sector.js'
 
 /**
  * 依參數方程式取樣圓周上的點。
@@ -27,19 +28,7 @@ export function createCirclePoints(radius, segments = 64) {
   assertPositiveNumber(radius, 'radius')
   assertIntegerAtLeast(segments, 3, 'segments')
 
-  const points = []
-
-  for (let i = 0; i <= segments; i++) {
-    const theta = (i / segments) * TAU
-
-    points.push([
-      radius * Math.cos(theta),
-      0,
-      radius * Math.sin(theta),
-    ])
-  }
-
-  return points
+  return createSectorPoints(radius, 0, TAU, segments)
 }
 
 /** 圓周長 C = 2πr */
