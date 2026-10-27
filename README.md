@@ -38,7 +38,7 @@ gcloud run deploy math-archaeology-3d \
 
 Cloud Build 會依 `Dockerfile` 執行 `npm install` → `npm test` → `npm run build`，
 **測試沒過就不會部署**；成功後終端機會顯示網址（`https://math-archaeology-3d-….run.app`）。
-之後更新只要 `git pull` 再執行最後一行。專案需已啟用計費（Cloud Run 有免費額度）。
+之後更新只要在 Cloud Shell 執行 `bash ~/math-archaeology-3d/deploy.sh`（會自動 `git pull` 再部署）。專案需已啟用計費（Cloud Run 有免費額度）。
 
 ## 目前進度：第一階段
 
